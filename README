@@ -1,0 +1,10 @@
+====
+strb
+====
+
+strb contains two modules strb.erl and strbu.erl, which is used to
+process string in Erlang.
+strb's interface is same with stdlib/string, but internal representation
+is binary. using strb, you can save your memory.
+
+
