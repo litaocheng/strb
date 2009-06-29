@@ -2,7 +2,7 @@
 -author('litaocheng@gmail.com').
 -vsn('0.1').
 
--compile([export_all]).
+-compile([export_all, bin_opt_info]).
 -include_lib("eunit/include/eunit.hrl").
 
 -type strb() :: binary().
@@ -354,11 +354,20 @@ binset(Bin, N, Char) ->
 %%
 %% Internal API
 %%
-prefix(<<C, Sub/binary>>, <<C, Rest/binary>>) ->
-    prefix(Sub, Rest);
-prefix(<<>>, _Rest) ->
+prefix(Sub, S) ->
+    Len = byte_size(Sub),
+    case catch <<Sub:Len/binary, _/binary>> = S of
+        S ->
+            true;
+        {'EXIT', _} ->
+            false
+        end.
+
+prefix2(<<C, Sub/binary>>, <<C, Rest/binary>>) ->
+    prefix2(Sub, Rest);
+prefix2(<<>>, _Rest) ->
     true;
-prefix(<<_C1, _Sub/binary>>, <<_C2, _Rest/binary>>) ->
+prefix2(<<_C1, _Sub/binary>>, <<_C2, _Rest/binary>>) ->
     false.
 
 substr2(Str, 1) -> Str;
